@@ -1,0 +1,59 @@
+#include <iostream>
+#include <fstream>
+#include <chrono>
+#include <ctime>
+
+
+using namespace std;
+ofstream out("ShellSort_100000");
+
+void ShellSort(int vect[], int n) {
+
+  // Rearrange elements at each n/2, n/4, n/8, ... intervals
+  for ( int longerval = n / 2;  longerval > 0;  longerval /= 2) {
+    for (int i = longerval; i < n; i += 1) {
+      int temp = vect[i];
+      int j;
+      for (j = i; j >=  longerval && vect[j -  longerval] > temp; j -= longerval) {
+        vect[j] = vect[j - longerval];
+      }
+      vect[j] = temp;
+    }
+  }
+
+
+}
+int main()
+{
+    int vect[100000];
+    int n=100000;
+    int i=30001;
+    out<<"Timp in Milisecunde"<<endl;
+    while(i<=32000)
+    {
+        char nr[10];
+        itoa(i,nr,10);
+        ifstream in(nr);
+        int j=0;
+        while(in)
+        {
+            in>>vect[j++];
+        }
+    chrono::steady_clock::time_point start = chrono::steady_clock::now();
+
+      ShellSort(vect,n);
+
+    chrono:: steady_clock :: time_point end = chrono::steady_clock::now();
+    chrono::steady_clock::duration d = end - start;
+    out <<(float)( chrono::duration_cast<chrono::nanoseconds>(d).count())/1000000;
+    out<< endl;
+        for(j=0; j<n; j++)
+        {
+            cout<<vect[j]<<" ";
+        }
+        cout<<endl;
+        i++;
+    }
+    out.close();
+    return 0;
+}
