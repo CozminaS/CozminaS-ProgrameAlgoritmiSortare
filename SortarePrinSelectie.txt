@@ -1,0 +1,59 @@
+#include <iostream>
+#include <fstream>
+#include <chrono>
+#include <ctime>
+
+
+using namespace std;
+ofstream out("SortareaPrinSelectie_100000");
+
+
+void SortareaPrinSelectie(int vect[], int n)
+{
+    int i, j, mini,aux;
+   chrono::steady_clock::time_point start = chrono::steady_clock::now();
+    for (i = 0; i < n-1; i++)
+    {
+        mini = i;
+        for (j = i+1; j < n; j++)
+        if (vect[j] < vect[mini])
+            mini = j;
+        {
+            aux=vect[mini];
+            vect[mini]=vect[i];
+            vect[i]=aux;
+        }
+    }
+   chrono:: steady_clock :: time_point end = chrono::steady_clock::now();
+    chrono::steady_clock::duration d = end - start;
+    out <<(float)( chrono::duration_cast<chrono::nanoseconds>(d).count())/1000000;
+    out<< endl;
+}
+
+int main()
+{
+    int vect[100000];
+    int n=100000;
+    int i=30001;
+    out<<"Timp in Milisecunde"<<endl;
+    while(i<=32000)
+    {
+        char nr[10];
+        itoa(i,nr,10);
+        ifstream in(nr);
+        int j=0;
+        while(in)
+        {
+            in>>vect[j++];
+        }
+       SortareaPrinSelectie(vect,n);
+        for(j=0; j<n; j++)
+        {
+            cout<<vect[j]<<" ";
+        }
+        cout<<endl;
+        i++;
+    }
+    out.close();
+    return 0;
+}
