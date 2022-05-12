@@ -1,0 +1,84 @@
+#include <iostream>
+#include <fstream>
+#include <chrono>
+#include <ctime>
+
+
+using namespace std;
+ofstream out("RadixSort_10");
+
+int getMax(int vect[], int n)
+{
+    int mx = vect[0];
+    for (int i = 1; i < n; i++)
+        if (vect[i] > mx)
+            mx = vect[i];
+    return mx;
+}
+
+void countSort(int vect[], int n, int exp)
+{
+    int temp[n];
+    int i, fr[10] = { 0 };
+
+    for (i = 0; i < n; i++)
+        fr[(vect[i] / exp) % 10]++;
+
+    for (i = 1; i < 10; i++)
+        fr[i] += fr[i - 1];
+
+    for (i = n - 1; i >= 0; i--)
+    {
+        temp[fr[(vect[i] / exp) % 10] - 1] = vect[i];
+        fr[(vect[i] / exp) % 10]--;
+    }
+
+    for (i = 0; i < n; i++)
+        vect[i] = temp[i];
+}
+void radixsort(int vect[], int n)
+{
+
+
+    int m = getMax(vect, n);
+
+    for (int exp = 1; m / exp > 0; exp *= 10)
+        countSort(vect, n, exp);
+
+}
+
+
+int main()
+{
+    int vect[10];
+    int n=10;
+    int i=1;
+    out<<"Timp in Milisecunde"<<endl;
+    while(i<=10000)
+    {
+        char nr[10];
+        itoa(i,nr,10);
+        ifstream in(nr);
+        int j=0;
+        while(in)
+        {
+            in>>vect[j++];
+        }
+    chrono::steady_clock::time_point start = chrono::steady_clock::now();
+
+      radixsort(vect,n);
+
+    chrono:: steady_clock :: time_point end = chrono::steady_clock::now();
+    chrono::steady_clock::duration d = end - start;
+    out <<(float)( chrono::duration_cast<chrono::nanoseconds>(d).count())/1000000;
+    out<< endl;
+        for(j=0; j<n; j++)
+        {
+            cout<<vect[j]<<" ";
+        }
+        cout<<endl;
+        i++;
+    }
+    out.close();
+    return 0;
+}
