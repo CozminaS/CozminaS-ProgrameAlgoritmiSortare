@@ -1,0 +1,105 @@
+#include <iostream>
+#include <fstream>
+#include <chrono>
+#include <ctime>
+
+
+using namespace std;
+ofstream out("SortareaPrinInterclasare_100000");
+
+
+void merge(int vect[], int st, int mij, int dr)
+{
+    int n1 = mij - st + 1;
+    int n2 = dr - mij;
+
+    int vst[n1], vdr[n2];
+
+
+    for (int i = 0; i < n1; i++)
+        vst[i] = vect[st + i];
+    for (int j = 0; j < n2; j++)
+        vdr[j] = vect[mij + 1 + j];
+
+    // indexul primului subvector
+    int i = 0;
+
+    // al index doilea al subvectorului
+    int j = 0;
+
+    // indexul initial al vectorului interclasat
+    int k = st;
+
+    while (i < n1 && j < n2) {
+        if (vst[i] <= vdr[j]) {
+            vect[k] = vst[i];
+            i++;
+        }
+        else {
+            vect[k] = vdr[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) {
+       vect[k] = vst[i];
+        i++;
+        k++;
+    }
+
+
+    while (j < n2) {
+        vect[k] = vdr[j];
+        j++;
+        k++;
+    }
+}
+
+
+void mergeSort(int vect[],int st,int dr){
+    if(st>=dr){
+        return;
+    }
+    int mij = (st+dr-1)/2;
+    mergeSort(vect,st,mij);
+    mergeSort(vect,mij+1,dr);
+    merge(vect,st,mij,dr);
+}
+
+
+int main()
+{
+    int vect[100000];
+    int n=100000;
+    int i=30001;
+    out<<"Timp in Milisecunde"<<endl;
+    while(i<=32000)
+    {
+        char nr[10];
+        itoa(i,nr,10);
+        ifstream in(nr);
+        int j=0;
+        while(in)
+        {
+            in>>vect[j++];
+        }
+    chrono::steady_clock::time_point start = chrono::steady_clock::now();
+
+      mergeSort(vect,0,n);
+
+    chrono:: steady_clock :: time_point end = chrono::steady_clock::now();
+    chrono::steady_clock::duration d = end - start;
+    out <<(float)( chrono::duration_cast<chrono::nanoseconds>(d).count())/1000000;
+    out<< endl;
+        for(j=0; j<n; j++)
+        {
+            cout<<vect[j]<<" ";
+        }
+        cout<<endl;
+        i++;
+    }
+    out.close();
+    return 0;
+}
+
