@@ -1,0 +1,29 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+   fstream ini,outi;
+  ini.open("SortareaRapida_100000",ios::in);
+  outi.open("Timp_Mediu_100000",ios::app);
+    float val,suma=0, impartitor, media;
+     string uni_mas;
+    getline(ini, uni_mas);
+     outi<<endl<<"SortareaRapida_100000"<<" = ";
+     int i=1;
+    impartitor=2000;
+     while(ini)
+     {
+         ini>>val;
+         suma=suma+val;
+     }
+     media=suma/impartitor;
+
+    outi<<media<<endl;
+    ini.close();
+    outi.close();
+    return 0;
+}
