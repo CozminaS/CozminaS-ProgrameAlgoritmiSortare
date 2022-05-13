@@ -1,0 +1,15 @@
+1.SortareaRapida_1000 = 0.0814864
+
+2.RadixSort_1000 = 0.0831492
+
+3.SortareaPrinInterclasare_1000 = 0.097622
+
+4.ShellSort_1000 = 0.10786
+
+5.SortareaPrinInsertie_1000 = 0.54284
+
+6.SortareaPrinSelectie_1000 = 1.04231
+
+7.SortareaBulelor_1000 = 1.70058
+
+8.ShakerSort_1000 = 1.81951
